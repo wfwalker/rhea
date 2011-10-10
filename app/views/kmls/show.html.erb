@@ -31,7 +31,7 @@ function initialize() {
       myOptions);
 
   var nyLayer = new google.maps.KmlLayer(
-      '<%= "http://http://severe-sunset-5969.heroku.com/kmls/%d.kml" % @kml.id %>',
+      '<%= "http://severe-sunset-5969.heroku.com/kmls/%d.kml" % @kml.id %>',
       {  suppressInfoWindows: true,
          map: map });
 }
