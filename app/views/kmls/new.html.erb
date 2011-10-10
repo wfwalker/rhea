@@ -1,0 +1,30 @@
+<h1>New kml</h1>
+
+<% form_for(@kml, :html => { :multipart => true }) do |f| %>
+  <%= f.error_messages %>
+
+<hr>
+
+  <p>
+    <%= f.label :source_url %><br />
+    <%= f.text_field :source_url %>
+  </p>
+  OR
+   <p>
+    <%= f.label :contents, 'File' %><br />
+    <%= f.file_field :contents %>
+  </p>
+
+<hr>
+
+ <p>
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </p>
+
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', kmls_path %>

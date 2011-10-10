@@ -1,0 +1,24 @@
+<h1>Listing kmls</h1>
+
+<table>
+  <tr>
+    <th>Source url</th>
+    <th>Description</th>
+    <th>Original filename</th>
+  </tr>
+
+<% @kmls.each do |kml| %>
+  <tr>
+    <td><%=h kml.source_url %></td>
+    <td><%=h kml.description %></td>
+    <td><%=h kml.original_filename %></td>
+    <td><%= link_to 'Show', kml %></td>
+    <td><%= link_to 'Edit', edit_kml_path(kml) %></td>
+    <td><%= link_to 'Destroy', kml, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New kml', new_kml_path %>

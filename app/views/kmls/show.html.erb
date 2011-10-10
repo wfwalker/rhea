@@ -1,0 +1,41 @@
+<p>
+  <b>Source url:</b>
+  <%=h @kml.source_url %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @kml.description %>
+</p>
+
+<p>
+  <b>Original filename:</b>
+  <%=h link_to @kml.original_filename, '/uploads/%s' % @kml.original_filename %>
+</p>
+
+
+<div id="map_canvas" style="width:600px; height:600px">hi mom</div>
+
+<script type="text/javascript">
+
+function initialize() {
+  var myLatlng = new google.maps.LatLng(40.65, -73.95);
+  var myOptions = {
+    zoom: 12,
+    center: myLatlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+
+  var map = new google.maps.Map(
+      document.getElementById("map_canvas"),
+      myOptions);
+
+  var nyLayer = new google.maps.KmlLayer(
+      '<%= "/kmls/%d.kml" % @kml.id %>',
+      {  suppressInfoWindows: true,
+         map: map });
+}
+</script>
+
+<%= link_to 'Edit', edit_kml_path(@kml) %> |
+<%= link_to 'Back', kmls_path %>

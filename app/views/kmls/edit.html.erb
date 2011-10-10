@@ -1,0 +1,28 @@
+<h1>Editing kml</h1>
+
+<% form_for(@kml) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :source_url %><br />
+    <%= f.text_field :source_url %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </p>
+  <p>
+    <%= f.label :original_filename %><br />
+    <%= f.text_field :original_filename %>
+  </p>
+  <p>
+    <%= f.label :contents %><br />
+    <%= f.text_area :contents %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @kml %> |
+<%= link_to 'Back', kmls_path %>
