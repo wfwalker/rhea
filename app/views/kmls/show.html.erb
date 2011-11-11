@@ -19,9 +19,9 @@
 <script type="text/javascript">
 
 function initialize() {
-  var myLatlng = new google.maps.LatLng(40.65, -73.95);
+  var myLatlng = new google.maps.LatLng(-13.7, -65.3);
   var myOptions = {
-    zoom: 12,
+    zoom: 5`,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -31,7 +31,7 @@ function initialize() {
       myOptions);
 
   var nyLayer = new google.maps.KmlLayer(
-      '<%= "http://severe-sunset-5969.heroku.com/kmls/%d.kml" % @kml.id %>',
+      '<%= url_for :controller => "kmls", :action => "show", :id => @kml, :only_path => false, :format => "kml" %>',
       {  suppressInfoWindows: true,
          map: map });
 }
