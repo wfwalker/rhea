@@ -13,6 +13,10 @@
   <%=h link_to @kml.original_filename, '/uploads/%s' % @kml.original_filename %>
 </p>
 
+<% if (request.host == 'localhost') %>
+  <strong>can't show kml layers with localhost</strong>
+<% end %>
+
 
 <div id="map_canvas" style="width:600px; height:600px">hi mom</div>
 
