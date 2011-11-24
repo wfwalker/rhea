@@ -19,7 +19,12 @@ class KmlsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @kml }
-      format.kml { render :xml => @kml.get_xml() }
+      format.kml {
+        File.open(Rails.root.join('public', 'uploads', @kml.original_filename), 'r') do |file|
+          contents = file.read()
+          render :xml => contents
+        end
+      }
     end
   end
 
