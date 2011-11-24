@@ -18,6 +18,13 @@
 <% end %>
 
 
+<p>name <%= XPath.first(@xml_document, @kml.name_path()) %></p>
+<p>description <%= XPath.first(@xml_document, @kml.description_path()) %></p>
+<p>all placemarks <%= XPath.match(@xml_document, @kml.all_placemark_path()).size() %></p>
+<p>all polygons <%= XPath.match(@xml_document, @kml.all_polygon_path()).size() %></p>
+<p>all linestrings <%= XPath.match(@xml_document, @kml.all_linestring_path()).size() %></p>
+<p>folders <%= XPath.match(@xml_document, @kml.folder_name_path()) %></p>
+
 <div id="map_canvas" style="width:600px; height:600px">hi mom</div>
 
 <script type="text/javascript">
@@ -35,7 +42,7 @@ function initialize() {
       myOptions);
 
   var nyLayer = new google.maps.KmlLayer(
-      '<%= url_for :controller => "kmls", :action => "show", :id => @kml, :only_path => false, :format => "kml" %>',
+      '<%= url_for :host => "50.17.230.115", :port => "3000", :controller => "kmls", :action => "show", :id => @kml, :only_path => false, :format => "kml" %>',
       {  suppressInfoWindows: true,
          map: map });
 }
