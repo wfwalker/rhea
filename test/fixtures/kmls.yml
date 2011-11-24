@@ -1,13 +1,13 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  source_url: MyString
-  description: MyString
-  original_filename: MyString
-  contents: MyText
+  source_url: ''
+  description: 'one description'
+  original_filename: 'santa-ana.kml'
+  contents: 'one contents'
 
 two:
-  source_url: MyString
-  description: MyString
-  original_filename: MyString
-  contents: MyText
+  source_url: ''
+  description: 'two description'
+  original_filename: 'santa-ana.kml'
+  contents: 'two contents'

@@ -14,7 +14,7 @@ class KmlsControllerTest < ActionController::TestCase
 
   test "should create kml" do
     assert_difference('Kml.count') do
-      post :create, :kml => { }
+      post :create, :kml => { :description => 'description', :source_url => 'source_url' }
     end
 
     assert_redirected_to kml_path(assigns(:kml))
@@ -31,7 +31,7 @@ class KmlsControllerTest < ActionController::TestCase
   end
 
   test "should update kml" do
-    put :update, :id => kmls(:one).to_param, :kml => { }
+    put :update, {:id => kmls(:one).to_param, :kml => { :description => 'updated', :source_url => 'foo', :original_filename => '' }}
     assert_redirected_to kml_path(assigns(:kml))
   end
 
