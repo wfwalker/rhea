@@ -1,0 +1,39 @@
+
+--- 
+kmls: 
+  columns: 
+  - id
+  - source_url
+  - description
+  - original_filename
+  - contents
+  - created_at
+  - updated_at
+  records: 
+  - - "1"
+    - ""
+    - santa ana
+    - santa-ana.kml
+    - |+
+      --- !ruby/object:File {}
+      
+    - 2011-11-10 08:17:05
+    - 2011-11-10 08:17:05
+  - - "2"
+    - ""
+    - area 2
+    - Area 2-A.kmz
+    - |+
+      --- !ruby/object:File {}
+      
+    - 2011-11-10 08:19:34
+    - 2011-11-10 08:19:34
+  - - "3"
+    - ""
+    - large raised fields
+    - Large raised fields.kml
+    - |+
+      --- !ruby/object:File {}
+      
+    - 2011-11-19 04:38:14
+    - 2011-11-19 04:38:14
