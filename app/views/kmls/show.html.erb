@@ -1,3 +1,5 @@
+<h1><%= XPath.first(@xml_document, @kml.name_path()) %></h1>
+
 <p>
   <b>Source url:</b>
   <%=h @kml.source_url %>
@@ -13,19 +15,25 @@
   <%=h link_to @kml.original_filename, '/uploads/%s' % @kml.original_filename %>
 </p>
 
-<% if (request.host == 'localhost') %>
-  <strong>can't show kml layers with localhost</strong>
-<% end %>
+<i><%= XPath.first(@xml_document, @kml.description_path()) %></i>
 
+<h2>
+  <%= XPath.match(@xml_document, @kml.all_placemark_path()).size() %> Placemarks
+  (<%= XPath.match(@xml_document, @kml.all_polygon_path()).size() %> polygons,
+   <%= XPath.match(@xml_document, @kml.all_linestring_path()).size() %> linestrings)
+</h2>
 
-<p>name <%= XPath.first(@xml_document, @kml.name_path()) %></p>
-<p>description <%= XPath.first(@xml_document, @kml.description_path()) %></p>
-<p>all placemarks <%= XPath.match(@xml_document, @kml.all_placemark_path()).size() %></p>
-<p>all polygons <%= XPath.match(@xml_document, @kml.all_polygon_path()).size() %></p>
-<p>all linestrings <%= XPath.match(@xml_document, @kml.all_linestring_path()).size() %></p>
+<div style="height: 200px; width: 500px; border: solid 1px gray; overflow: auto">
+<% XPath.match(@xml_document, @kml.all_placemark_path()).each { |placemark| %>
+  <div><%= XPath.first(placemark, "name") %></div>
+<% } %>
+</div>
+
 <p>folders <%= XPath.match(@xml_document, @kml.folder_name_path()) %></p>
 
-<div id="map_canvas" style="width:600px; height:600px">hi mom</div>
+<div id="map_canvas" style="width:600px; height:600px; border: solid 1px gray">
+Loading...
+</div>
 
 <script type="text/javascript">
 
@@ -45,6 +53,11 @@ function initialize() {
       '<%= url_for :host => "50.17.230.115", :port => "3000", :controller => "kmls", :action => "show", :id => @kml, :only_path => false, :format => "kml" %>',
       {  suppressInfoWindows: true,
          map: map });
+
+  google.maps.event.addListenerOnce(nyLayer, "defaultviewport_changed",
+  function() {
+    console.log("loaded kml and changed viewport");
+  });          
 }
 </script>
 
