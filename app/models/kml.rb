@@ -51,13 +51,29 @@ class Kml < ActiveRecord::Base
 		# </coordinates>
 
 		all_coordinates = []
-		XPath.match(get_xml(), all_coordinates_path()).each {|thing|
-			thing.text.split.each { |coordinate_string|
-				all_coordinates.push(coordinate_string.split(","))				
+		XPath.match(get_xml(), all_coordinates_path()).each {|coordinate_list_node|
+			coordinate_list_node.text.split.each { |coordinate_string|
+				numeric_tuple = coordinate_string.split(",").collect { |num_string| num_string.to_f }
+				all_coordinates.push(numeric_tuple)				
 			}
 		}
 
 		return all_coordinates
+	end
+
+	def get_bounding_box
+		coordinates = get_coordinates()
+		minX, minY, minZ = coordinates[0]
+		maxX, maxY, maxZ = coordinates[0]
+
+		coordinates.each { |x,y,z|
+			minX = minX > x ? x : minX
+			minY = minY > y ? y : minY
+			maxX = maxX < x ? x : maxX
+			maxY = maxY < y ? y : maxY
+		}
+
+		return [[minX, minY], [minX, maxY], [maxX, maxY], [maxX, minY]]
 	end
 
 	def original_filename_or_source_url()
