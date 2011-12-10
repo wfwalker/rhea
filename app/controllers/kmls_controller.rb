@@ -14,7 +14,12 @@ class KmlsController < ApplicationController
   # GET /kmls/1.xml
   def show
     @kml = Kml.find(params[:id])
-    @xml_document = @kml.get_xml
+
+    begin
+      @xml_document = @kml.get_xml
+    rescue
+      @xml_document = nil
+    end
 
     respond_to do |format|
       format.html # show.html.erb

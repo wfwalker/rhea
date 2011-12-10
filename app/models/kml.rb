@@ -7,6 +7,8 @@ include REXML
 class Kml < ActiveRecord::Base
 	validates_presence_of :description
 	validate :original_filename_or_source_url
+	# ./script/plugin install https://github.com/henrik/validates_url_format_of.git
+	validates_url_format_of :source_url
 
 	def name_path
 		return "/*[local-name()='kml']/*[local-name()='Document']/*[local-name()='name']"
@@ -37,10 +39,15 @@ class Kml < ActiveRecord::Base
 	end
 
 	def get_xml
-		xml_file = File.new(Rails.root.join('public', 'uploads', original_filename), 'r')
-		xml_document = Document.new(xml_file.read)
+		# TODO: only works if the file was actually uploaded
+		if original_filename != ""
+			xml_file = File.new(Rails.root.join('public', 'uploads', original_filename), 'r')
+			xml_document = Document.new(xml_file.read)
 
-		return xml_document
+			return xml_document
+		else
+			raise "don't support remote KML's like '%s' yet" % source_url
+		end
 	end
 
 	def get_coordinates
