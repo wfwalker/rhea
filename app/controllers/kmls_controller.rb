@@ -17,6 +17,7 @@ class KmlsController < ApplicationController
 
     begin
       @xml_document = @kml.get_xml
+      @bounding_box = @kml.get_bounding_box
     rescue
       @xml_document = nil
     end

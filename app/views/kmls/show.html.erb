@@ -39,6 +39,7 @@ Loading...
 
 function initialize() {
   var myLatlng = new google.maps.LatLng(-13.7, -65.3);
+
   var myOptions = {
     zoom: 5,
     center: myLatlng,
@@ -53,11 +54,27 @@ function initialize() {
       '<%= url_for :host => "50.17.230.115", :port => "3000", :controller => "kmls", :action => "show", :id => @kml, :only_path => false, :format => "kml" %>',
       {  suppressInfoWindows: true,
          map: map });
+  
+  var boundingBoxCoords = [
+    <%= @bounding_box.collect { |coord| "new google.maps.LatLng(%f, %f)" % [coord[1], coord[0]] }.join(", ") %>
+  ]
+
+  boundingBox = new google.maps.Polygon({
+    paths: boundingBoxCoords,
+    strokeColor: "#FF0000",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: "#FF0000",
+    fillOpacity: 0.35
+  });
+
+  boundingBox.setMap(map);
 
   google.maps.event.addListenerOnce(nyLayer, "defaultviewport_changed",
-  function() {
-    console.log("loaded kml and changed viewport");
-  });          
+    function() {
+      console.log("loaded kml and changed viewport");
+    }
+  );          
 }
 </script>
 
