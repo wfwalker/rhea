@@ -17,6 +17,10 @@
 
 <i><%= XPath.first(@xml_document, @kml.description_path()) %></i>
 
+<div id="map_canvas" style="width:600px; height:600px; border: solid 1px gray">
+Loading...
+</div>
+
 <h2>
   <%= XPath.match(@xml_document, @kml.all_placemark_path()).size() %> Placemarks
   (<%= XPath.match(@xml_document, @kml.all_polygon_path()).size() %> polygons,
@@ -30,10 +34,6 @@
 </div>
 
 <p>folders <%= XPath.match(@xml_document, @kml.folder_name_path()) %></p>
-
-<div id="map_canvas" style="width:600px; height:600px; border: solid 1px gray">
-Loading...
-</div>
 
 <script type="text/javascript">
 
