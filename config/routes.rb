@@ -1,6 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :kmls
 
+  # wfw root URL
+  map.connect '', :controller => 'kmls', :action => 'index'
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
