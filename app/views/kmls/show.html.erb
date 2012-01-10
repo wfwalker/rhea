@@ -50,11 +50,6 @@ function initialize() {
       document.getElementById("map_canvas"),
       myOptions);
 
-  var nyLayer = new google.maps.KmlLayer(
-      '<%= url_for :host => "50.17.230.115", :port => "3000", :controller => "kmls", :action => "show", :id => @kml, :only_path => false, :format => "kml" %>',
-      {  suppressInfoWindows: true,
-         map: map });
-  
   var boundingBoxCoords = [
     <%= @bounding_box.collect { |coord| "new google.maps.LatLng(%f, %f)" % [coord[1], coord[0]] }.join(", ") %>
   ]
@@ -69,12 +64,6 @@ function initialize() {
   });
 
   boundingBox.setMap(map);
-
-  google.maps.event.addListenerOnce(nyLayer, "defaultviewport_changed",
-    function() {
-      console.log("loaded kml and changed viewport");
-    }
-  );          
 }
 </script>
 
