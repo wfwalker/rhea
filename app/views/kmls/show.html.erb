@@ -1,4 +1,4 @@
-<h1><%= XPath.first(@xml_document, @kml.name_path()) %></h1>
+<h1><%= XPath.first(@kml.get_xml(), @kml.name_path()) %></h1>
 
 <p>
   <b>Source url:</b>
@@ -15,25 +15,25 @@
   <%=h link_to @kml.original_filename, '/uploads/%s' % @kml.original_filename %>
 </p>
 
-<i><%= XPath.first(@xml_document, @kml.description_path()) %></i>
+<i><%= XPath.first(@kml.get_xml(), @kml.description_path()) %></i>
 
 <div id="map_canvas" style="width:600px; height:600px; border: solid 1px gray">
 Loading...
 </div>
 
 <h2>
-  <%= XPath.match(@xml_document, @kml.all_placemark_path()).size() %> Placemarks
-  (<%= XPath.match(@xml_document, @kml.all_polygon_path()).size() %> polygons,
-   <%= XPath.match(@xml_document, @kml.all_linestring_path()).size() %> linestrings)
+  <%= XPath.match(@kml.get_xml(), @kml.all_placemark_path()).size() %> Placemarks
+  (<%= XPath.match(@kml.get_xml(), @kml.all_polygon_path()).size() %> polygons,
+   <%= XPath.match(@kml.get_xml(), @kml.all_linestring_path()).size() %> linestrings)
 </h2>
 
 <div style="height: 200px; width: 500px; border: solid 1px gray; overflow: auto">
-<% XPath.match(@xml_document, @kml.all_placemark_path()).each { |placemark| %>
-  <div><%= XPath.first(placemark, "name") %></div>
+<% XPath.match(@kml.get_xml(), @kml.all_placemark_path()).each { |placemark| %>
+  <div><%= XPath.first(placemark, "name") %> -- <%= XPath.first(placemark, "LineString/coordinates") %></div>
 <% } %>
 </div>
 
-<p>folders <%= XPath.match(@xml_document, @kml.folder_name_path()) %></p>
+<p>folders <%= XPath.match(@kml.get_xml(), @kml.folder_name_path()) %></p>
 
 <script type="text/javascript">
 

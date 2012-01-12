@@ -5,6 +5,7 @@ require "rexml/text"
 include REXML
 
 class Kml < ActiveRecord::Base
+	@xml = nil
 	validates_presence_of :description
 	validate :original_filename_or_source_url
 	# ./script/plugin install https://github.com/henrik/validates_url_format_of.git
@@ -39,12 +40,14 @@ class Kml < ActiveRecord::Base
 	end
 
 	def get_xml
-		# TODO: only works if the file was actually uploaded
-		if original_filename != ""
+		if @xml != nil 
+			return @xml
+		elsif original_filename != "" 
+			# TODO: only works if the file was actually uploaded
 			xml_file = File.new(Rails.root.join('public', 'uploads', original_filename), 'r')
-			xml_document = Document.new(xml_file.read)
+			@xml = Document.new(xml_file.read)
 
-			return xml_document
+			return @xml
 		else
 			raise "don't support remote KML's like '%s' yet" % source_url
 		end
