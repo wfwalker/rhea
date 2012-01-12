@@ -63,8 +63,8 @@ $(document).ready(function() {
   boundingBox.setMap(map);
 
   $.ajax({
-          type: "GET",
-    url: "/kmls/10.xml",
+    type: "GET",
+    url: "/kmls/" + <%= @kml.id %> + ".xml",
     dataType: "xml",
     success: function(document) {
       var nameResult = document.evaluate( "/*[local-name()='kml']/*[local-name()='Document']/*[local-name()='name']", document, null, XPathResult.STRING_TYPE, null );  
