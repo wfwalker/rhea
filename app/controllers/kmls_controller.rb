@@ -15,22 +15,9 @@ class KmlsController < ApplicationController
   def show
     @kml = Kml.find(params[:id])
 
-    begin
-      @xml_document = @kml.get_xml
-      @bounding_box = @kml.get_bounding_box
-    rescue
-      @xml_document = nil
-    end
-
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @kml }
-      format.kml {
-        File.open(Rails.root.join('public', 'uploads', @kml.original_filename), 'r') do |file|
-          contents = file.read()
-          render :xml => contents
-        end
-      }
+      format.xml  { render :xml => @kml.get_xml() }
     end
   end
 
@@ -41,7 +28,6 @@ class KmlsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @kml }
     end
   end
 
@@ -67,10 +53,8 @@ class KmlsController < ApplicationController
 
         if @kml.save
         format.html { redirect_to(@kml, :notice => 'Kml was successfully created.') }
-        format.xml  { render :xml => @kml, :status => :created, :location => @kml }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @kml.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -83,10 +67,8 @@ class KmlsController < ApplicationController
     respond_to do |format|
       if @kml.update_attributes(params[:kml])
         format.html { redirect_to(@kml, :notice => 'Kml was successfully updated.') }
-        format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @kml.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -99,7 +81,6 @@ class KmlsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(kmls_url) }
-      format.xml  { head :ok }
     end
   end
 end
