@@ -1,4 +1,4 @@
-<h1><%= XPath.first(@kml.get_xml(), @kml.name_path()) %></h1>
+<h1 id="name">Name</h1>
 
 <p>
   <b>Source url:</b>
@@ -15,29 +15,26 @@
   <%=h link_to @kml.original_filename, '/uploads/%s' % @kml.original_filename %>
 </p>
 
-<i><%= XPath.first(@kml.get_xml(), @kml.description_path()) %></i>
+<i><div id="description">description</div></i>
 
 <div id="map_canvas" style="width:600px; height:600px; border: solid 1px gray">
 Loading...
 </div>
 
 <h2>
-  <%= XPath.match(@kml.get_xml(), @kml.all_placemark_path()).size() %> Placemarks
+  <span id="placemarkCount">N</span> Placemarks
   (<%= XPath.match(@kml.get_xml(), @kml.all_polygon_path()).size() %> polygons,
    <%= XPath.match(@kml.get_xml(), @kml.all_linestring_path()).size() %> linestrings)
 </h2>
 
-<div style="height: 200px; width: 500px; border: solid 1px gray; overflow: auto">
-<% XPath.match(@kml.get_xml(), @kml.all_placemark_path()).each { |placemark| %>
-  <div><%= XPath.first(placemark, "name") %> -- <%= XPath.first(placemark, "LineString/coordinates") %></div>
-<% } %>
+<div id="placemarkList" style="height: 200px; width: 500px; border: solid 1px gray; overflow: auto">
 </div>
 
 <p>folders <%= XPath.match(@kml.get_xml(), @kml.folder_name_path()) %></p>
 
 <script type="text/javascript">
 
-function initialize() {
+$(document).ready(function() {
   var myLatlng = new google.maps.LatLng(-13.7, -65.3);
 
   var myOptions = {
@@ -51,7 +48,7 @@ function initialize() {
       myOptions);
 
   var boundingBoxCoords = [
-    <%= @bounding_box.collect { |coord| "new google.maps.LatLng(%f, %f)" % [coord[1], coord[0]] }.join(", ") %>
+    <%= @kml.get_bounding_box().collect { |coord| "new google.maps.LatLng(%f, %f)" % [coord[1], coord[0]] }.join(", ") %>
   ]
 
   boundingBox = new google.maps.Polygon({
@@ -64,7 +61,29 @@ function initialize() {
   });
 
   boundingBox.setMap(map);
-}
+
+  $.ajax({
+          type: "GET",
+    url: "/kmls/10.xml",
+    dataType: "xml",
+    success: function(document) {
+      var nameResult = document.evaluate( "/*[local-name()='kml']/*[local-name()='Document']/*[local-name()='name']", document, null, XPathResult.STRING_TYPE, null );  
+      $('#name').text(nameResult.stringValue);
+
+      var descResult = document.evaluate( "/*[local-name()='kml']/*[local-name()='Document']/*[local-name()='description']", document, null, XPathResult.STRING_TYPE, null );  
+      $('#description').text(descResult.stringValue);
+
+      var placemarkNamesResult = document.evaluate( "//*[local-name()='Placemark']/*[local-name()='name']", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );  
+      $('#placemarkCount').text(placemarkNamesResult.snapshotLength);
+      for (var i = 0; i < placemarkNamesResult.snapshotLength; i++)
+      {
+        $('#placemarkList').append('<div>' + placemarkNamesResult.snapshotItem(i).textContent + '</div>');
+      }
+    }
+  });
+
+});
+
 </script>
 
 <%= link_to 'Edit', edit_kml_path(@kml) %> |
